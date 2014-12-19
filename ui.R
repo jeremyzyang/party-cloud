@@ -17,12 +17,14 @@ shinyUI(fluidPage(
   
   fluidRow(
     
-    column(2,h5("Democrat Manifesto:")),
+    column(2,p("")),
+    column(1,h5("Democrat Manifesto:")),
     
     column(3,
            plotOutput('plot1')),
     
-    column(2,h5("Republican Manifesto:")),
+    column(2,p("")),
+    column(1,h5("Republican Manifesto:")),
     
     column(3,
            plotOutput('plot2'))
