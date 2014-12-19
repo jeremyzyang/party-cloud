@@ -20,13 +20,13 @@ shinyUI(fluidPage(
     column(1,p("")),
     column(2,h5("Democrat Manifesto:")),
     
-    column(3,
+    column(2,
            plotOutput('plot1')),
     
     column(1,p("")),
     column(2,h5("Republican Manifesto:")),
     
-    column(3,
+    column(2,
            plotOutput('plot2'))
   ),
   
@@ -34,12 +34,12 @@ shinyUI(fluidPage(
     
     column(1,p("")),
     column(2,h5("Democrat Speech:")),
-    column(3,
+    column(2,
            plotOutput('plot3')),
     
     column(1,p("")),
     column(2,h5("Republican Speech:")),
-    column(3,
+    column(2,
            plotOutput('plot4'))
   ),
   
