@@ -8,6 +8,8 @@ shinyUI(fluidPage(
   titlePanel("Party Word Clouds"),
   
   p("Jeremy Yang"),
+  br(),
+  br(),
   
   
   # Sidebar with a slider input for the number of bins
@@ -36,13 +38,15 @@ shinyUI(fluidPage(
            plotOutput('plot4'))
   ),
   
+  br(),
+  br(),
   hr(),
   
   fluidRow(
     
     column(5,p("")),
     column(2,
-           selectInput("select1",label=p("select a year:"),choices=as.character(seq(1956,2012,4)),selected="2012")),
+           selectInput("select1",label=h5("select a year:"),choices=as.character(seq(1956,2012,4)),selected="2012")),
     column(5,p(""))
     
     
