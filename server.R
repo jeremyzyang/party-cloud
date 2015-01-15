@@ -1,22 +1,90 @@
-#### server script 
-install.packages('shiny')
-install.packages('tm')
-install.packages('wordcloud')
-install.packages('SnowballC')
 library(shiny)
 library(tm)
 library(wordcloud)
+library(XML)
 library(SnowballC)
+library(shinyapps)
+
+HtmltoTxt <- function (url)                           
+{ library(XML) 
+  
+  html <- htmlTreeParse(url,useInternal=TRUE)          
+  text <- unlist(xpathApply(html,'//p',xmlValue)) 
+  text <- gsub('\\n',' ',text)
+  text <- paste(text,collapse=' ')
+  return(text)
+}
+
+# 1956-2012: democrat party manifesto  
+add <- "http://www.presidency.ucsb.edu/ws/index.php?pid=29"
+manifesto.d <- "placeholder"
+for (i in 1:13) 
+{ manifesto.d[i] <- paste(add,i+600,sep="")}
+manifesto.d[13]
+url.2008 <- "http://www.presidency.ucsb.edu/ws/index.php?pid=78283"
+url.2012 <- "http://www.presidency.ucsb.edu/ws/index.php?pid=101962"
+manifesto.d <- c(manifesto.d,url.2008,url.2012) 
+
+# 1956-2012: republican party manifesto
+add2 <- "http://www.presidency.ucsb.edu/ws/index.php?pid=25"
+manifesto.r <- "placeholder"
+for (j in 1:13)
+{ manifesto.r[j] <- paste(add2,j+837,sep="")}
+manifesto.r[13]
+url.2008 <- "http://www.presidency.ucsb.edu/ws/index.php?pid=78545"
+url.2012 <- "http://www.presidency.ucsb.edu/ws/index.php?pid=101961"
+manifesto.r <- c(manifesto.r,url.2008,url.2012)
+
+# 1956-2012: democrat presidential speech
+speech.d <- c("http://www.presidency.ucsb.edu/ws/index.php?pid=101968",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=78284",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25971",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25963",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=53253",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25958",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25961",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25972",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=44909",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25953",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25967",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25964",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=26467",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=25966",
+             "http://www.presidency.ucsb.edu/ws/index.php?pid=75172")
+speech.d <- rev(speech.d)
+
+# 1956-2012: republican presidential speech 
+speech.r <- c("http://www.presidency.ucsb.edu/ws/index.php?pid=101966",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=78576",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=72727",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25954",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25960",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=21352",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25955",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=40290",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25970",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=6281",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=3537",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25968",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25973",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=25974",
+              "http://www.presidency.ucsb.edu/ws/index.php?pid=10583")
+speech.r <- rev(speech.r)
 
 # read data
-data <- Corpus(DirSource("data"))
+html <- c(manifesto.d,speech.d,manifesto.r,speech.r)
+text <- 'placeholder'
+
+for (k in 1:60){
+  text[k] <- HtmltoTxt(html[k])
+}
+
+data <- Corpus(VectorSource(text))
+summary(data)
 
 # server function
 
-shinyServer(function(input, output) {
-  
-  
-  
+shinyServer(function(input, output) { 
   
   cloud.d <- reactive({
     
